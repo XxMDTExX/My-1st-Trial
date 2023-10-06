@@ -1,0 +1,60 @@
+import random
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.health = 100
+        self.attack_power = 10
+
+    def take_damage(self, damage):
+        self.health -= damage
+
+    def attack(self, enemy):
+        damage = random.randint(0, self.attack_power)
+        enemy.take_damage(damage)
+        return damage
+
+class Enemy:
+    def __init__(self, name):
+        self.name = name
+        self.health = 50
+        self.attack_power = 5
+
+    def take_damage(self, damage):
+        self.health -= damage
+
+    def attack(self, player):
+        damage = random.randint(0, self.attack_power)
+        player.take_damage(damage)
+        return damage
+
+def main():
+    player_name = input("Enter your character's name: ")
+    player = Player(player_name)
+    enemy = Enemy("Goblin")
+
+    print(f"Welcome, {player_name}! You encounter a {enemy.name}.")
+
+    while player.health > 0 and enemy.health > 0:
+        action = input("What do you want to do? (attack/flee): ").lower()
+        
+        if action == "attack":
+            player_damage = player.attack(enemy)
+            enemy_damage = enemy.attack(player)
+            print(f"You attack the {enemy.name} for {player_damage} damage.")
+            print(f"The {enemy.name} attacks you for {enemy_damage} damage.")
+        elif action == "flee":
+            print("You flee from the battle.")
+            break
+        else:
+            print("Invalid action. Choose 'attack' or 'flee'.")
+
+        print(f"Your health: {player.health}, {enemy.name}'s health: {enemy.health}")
+
+    if player.health <= 0:
+        print("Game Over. You have been defeated.")
+    elif enemy.health <= 0:
+        print(f"Congratulations, {player_name}! You have defeated the {enemy.name}.")
+
+if __name__ == "__main__":
+    main()
